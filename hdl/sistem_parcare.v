@@ -1,6 +1,8 @@
 module sistem_parcare #(parameter NR_TACTE_SENZOR = 8'd20)(
+    //semnale generale
     input                clk_i,
     input                rst_ni,
+//semnale APB
     input      [1:0]     paddr_i,
     input                psel_i,
     input                penable_i,
@@ -8,16 +10,17 @@ module sistem_parcare #(parameter NR_TACTE_SENZOR = 8'd20)(
     input      [7:0]     pwdata_i,
     output reg [7:0]     prdata_o,
     output               pready_o,
-
+// interfata cu stimuli din exterior
     input      [1:0]     btn_i,
     input                senzor_proxim_i,
+// interfata de iesire
     output reg           stare_bariera_o
 );
 
 assign pready_o = 1'b1;
 
 reg  [2:0]   stare_curenta;
-reg  [3:0]   nr_locuri_libere;
+reg  [3:0]   nr_locuri_libere; //adresa: ...
 wire [7:0]   x_tacte_ceas = NR_TACTE_SENZOR;
 reg  [7:0]   counter;
 reg          intrare_iesire; // 1 == intrare, 0 == iesire
@@ -102,10 +105,10 @@ always @(posedge clk_i or negedge rst_ni) begin
       prdata_o <= 8'd0;
   else if (psel_i && !pwrite_i) begin
       case (paddr_i)
-          2'b00: prdata_o <= {6'b0, btn_i};          
+          //2'b00: prdata_o <= {6'b0, btn_i};          
           2'b01: prdata_o <= {4'b0, nr_locuri_libere};       
-          2'b10: prdata_o <= {6'b0, stare_bariera_o, senzor_proxim_i}; 
-          2'b11: prdata_o <= x_tacte_ceas;              
+        //  2'b10: prdata_o <= {6'b0, stare_bariera_o, senzor_proxim_i}; 
+      //    2'b11: prdata_o <= x_tacte_ceas;              
       endcase
   end
 end
