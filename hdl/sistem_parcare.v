@@ -16,10 +16,12 @@ module sistem_parcare #(parameter NR_TACTE_SENZOR = 8'd20,
     input      [1:0]     btn_i,
     input                senzor_proxim_i,
 // interfata de iesire
+    output               parcare_plina_o,
+    output               parcare_goala_o,
     output reg           stare_bariera_o
 );
 
-assign pready_o = 1'b1;
+assign pready_o         = 1'b1;
 
 reg  [2:0]   stare_curenta;
 reg  [3:0]   nr_locuri_libere; //adresa: ...
@@ -31,6 +33,8 @@ reg  [4:0]   ora_start;
 reg  [4:0]   ora_stop;
 
 wire sistem_activ = (ora_curenta >= ora_start) && (ora_curenta < ora_stop);
+assign parcare_goala_o  = (nr_locuri_libere == 4'd15);
+assign parcare_plina_o  = (nr_locuri_libere == 4'd0);
 
 localparam IDLE        = 3'b000;
 localparam RIDICARE    = 3'b001;
