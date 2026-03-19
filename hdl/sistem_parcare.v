@@ -26,7 +26,7 @@ reg  [3:0]   nr_locuri_libere; //adresa: ...
 reg  [7:0]   counter;
 reg          intrare_iesire; // 1 == intrare, 0 == iesire
 reg  [4:0]   ora_curenta;
-reg  [31:0]  counter_ora; 
+reg  [7:0]   counter_ora; 
 reg  [4:0]   ora_start;
 reg  [4:0]   ora_stop;
 
