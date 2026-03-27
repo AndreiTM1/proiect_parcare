@@ -21,30 +21,27 @@ module sistem_parcare_tb;
     always #5 clk_i = ~clk_i;
 
     // Task pentru citire APB
-    // Task pentru citire APB cu verificare automata
     task apb_read_check(input [1:0] addr, input [7:0] expected_data);
         begin
             @(posedge clk_i);
             paddr_i   <= addr; 
-            pwrite_i  <= 0;      // Modul Citire
+            pwrite_i  <= 0;      
             psel_i    <= 1;
-            penable_i <= 0;      // Faza de Setup (Standard APB)
+            penable_i <= 0;      
             
             @(posedge clk_i);
-            penable_i <= 1;      // Faza de Access
+            penable_i <= 1;      
             
             @(posedge clk_i);
-            // Verificarea datelor
             if (prdata_o === expected_data) begin
                 $display("[%t] [PASS] Adresa %b | Citit: %h | Corect!", $time, addr, prdata_o);
             end else begin
                 $display("[%t] [FAIL] Adresa %b | Citit: %h | Asteptat: %h !!!", $time, addr, prdata_o, expected_data);
             end
             
-            // Revenire la starea Idle
             psel_i    <= 0; 
             penable_i <= 0;
-            paddr_i   <= 2'bxx; // Curatam adresa pentru a vedea tranzitiile clar
+            paddr_i   <= 2'bxx; 
         end
     endtask
 

@@ -70,6 +70,7 @@ always @(posedge clk_i or negedge rst_ni) begin
       end
 end
 
+// counter_ora numara daca au trecut acele TACTE_PER_ORA pentru a se reseta dupa ce a trecut o ora
 always @(posedge clk_i or negedge rst_ni) begin
     if (~rst_ni)
         counter_ora <= 8'd0;
@@ -78,6 +79,7 @@ always @(posedge clk_i or negedge rst_ni) begin
          else counter_ora <= counter_ora + 1;
 end
 
+// ora_curenta creste cand au trecut acele TACTE_PER_ORA
 always @(posedge clk_i or negedge rst_ni) begin
     if (~rst_ni)
         ora_curenta <= 5'd0;
@@ -87,6 +89,7 @@ always @(posedge clk_i or negedge rst_ni) begin
             else ora_curenta <= ora_curenta + 1;
 end
 
+// se scrie prin APB ora de start si stop
 always @(posedge clk_i or negedge rst_ni) begin
     if (~rst_ni)
         ora_start <= 5'd8;
@@ -94,7 +97,6 @@ always @(posedge clk_i or negedge rst_ni) begin
             ora_start <= pwdata_i[4:0];
 end
 
-//
 always @(posedge clk_i or negedge rst_ni) begin
     if (~rst_ni)
         ora_stop <= 5'd22;
@@ -102,7 +104,7 @@ always @(posedge clk_i or negedge rst_ni) begin
             ora_stop <= pwdata_i[4:0];
 end
 
-//
+// bariera este logic ridicata daca este in starea de ridicare sau daca asteapta dupa senzor
 always @(posedge clk_i or negedge rst_ni) begin
   if(~rst_ni)
     stare_bariera_o <= 0;
@@ -112,6 +114,7 @@ always @(posedge clk_i or negedge rst_ni) begin
                 stare_bariera_o <= 0;
 end
 
+// counter_senzor numara tactele pana la urmatoarea verificare a senzorului de proximitate
 always @(posedge clk_i or negedge rst_ni) begin
   if(~rst_ni)
     counter_senzor <= 0;
@@ -120,6 +123,7 @@ always @(posedge clk_i or negedge rst_ni) begin
   else counter_senzor <= 0;
 end
 
+// nr_locuri_libere creste sau scade in functie de intrarea sau iesirea unei masini
 always @(posedge clk_i or negedge rst_ni) begin
   if(~rst_ni)
     nr_locuri_libere <= 4'd15;
@@ -130,6 +134,7 @@ always @(posedge clk_i or negedge rst_ni) begin
              nr_locuri_libere <= nr_locuri_libere + 1'b1;   
 end
 
+// cand bariera e in IDLE, butoanele scriu in btn_i daca se intra sau se iese
 always @(posedge clk_i or negedge rst_ni) begin
   if(~rst_ni)
     intrare_iesire <= 0;
@@ -140,6 +145,7 @@ always @(posedge clk_i or negedge rst_ni) begin
                   intrare_iesire <= 0;
 end
 
+// se trece in prdata_o ce registrii se scriu in functie de adresa
 always @(posedge clk_i or negedge rst_ni) begin
   if (~rst_ni) 
       prdata_o <= 8'd0;
